@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <title>Margarita & Pedro · ¡Nos Casamos!</title>
+   
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+   <div id="toast" class="toast">¡Información copiada! 📋✨</div>
+
+   <!-- CANVAS DE EXPLOSIÓN DE HOJAS VERDES -->
+   <canvas id="petalsCanvas"></canvas>
+
+   <!-- MÚSICA DE FONDO -->
+   <audio id="musicaInvitacion" preload="auto" loop>
+      <source src="img/musica.mp3" type="audio/mpeg">
+   </audio>
+
+   <div id="music-toggle" class="music-btn" onclick="toggleMusic()">
+       <i class="fa-solid fa-music"></i>
+   </div>
+
+   <!-- INTRO VIDEO DEL SOBRE -->
+   <div id="contenedor-principal" onclick="activarInvitacion()">
+       <video id="videoSobre" playsinline muted preload="auto" poster="img/sobre.jpg">
+           <source src="img/1.mp4" type="video/mp4">
+       </video>
+       <div id="capa-boton">
+           <div class="boton-rosa-inicio" id="btn-toca-abrir">TOCÁ EL SELLO PARA ABRIR 💌</div>
+       </div>
+   </div>
+
+   <!-- INVITACIÓN WEB EDITORIAL -->
+   <div id="seccion-final" class="oculto">
+
+       <div class="bloque-papel-textura">
+           
+           <!-- PORTADA A PANTALLA COMPLETA -->
+           <header class="hero-portada reveal">
+               <div class="portada-frame-inner">
+                   <img src="img/foto-portada.jpg" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80'" alt="Margarita y Pedro" class="portada-img">
+                   <div class="portada-overlay">
+                       <span class="portada-monogram">✦ M & P ✦</span>
+                       <h1 class="main-title-portada">Margarita & Pedro</h1>
+                       <p class="title-sub-portada">¡NOS CASAMOS!</p>
+                   </div>
+               </div>
+           </header>
+
+           <!-- SAVE THE DATE -->
+           <section class="section-pad reveal text-center" id="std-section">
+               <h2 class="editorial-heading mt-10">SAVE THE DATE</h2>
+               <p class="section-sub-label">Tocá cada círculo para descubrir la fecha</p>
+
+               <div class="scratch-circles-wrapper mt-25" id="circlesWrapper">
+                   <div class="circle-scratch-card" onclick="revelarDirecto(0)">
+                       <div class="circle-reveal-content">
+                           <span class="circle-number">02</span>
+                           <span class="circle-label">DÍA</span>
+                       </div>
+                       <canvas class="circle-canvas" id="canvas-0" data-index="0" data-label="DÍA"></canvas>
+                   </div>
+
+                   <div class="circle-scratch-card" onclick="revelarDirecto(1)">
+                       <div class="circle-reveal-content">
+                           <span class="circle-number">10</span>
+                           <span class="circle-label">MES</span>
+                       </div>
+                       <canvas class="circle-canvas" id="canvas-1" data-index="1" data-label="MES"></canvas>
+                   </div>
+
+                   <div class="circle-scratch-card" onclick="revelarDirecto(2)">
+                       <div class="circle-reveal-content">
+                           <span class="circle-number">2026</span>
+                           <span class="circle-label">AÑO</span>
+                       </div>
+                       <canvas class="circle-canvas" id="canvas-2" data-index="2" data-label="AÑO"></canvas>
+                   </div>
+               </div>
+
+               <div class="countdown-card" id="countdownCard">
+                   <p class="countdown-title">FALTAN POCOS DÍAS</p>
+                   <div class="countdown-boxes">
+                       <div class="cd-box"><span id="cd-days">00</span><p>Días</p></div>
+                       <div class="cd-sep">:</div>
+                       <div class="cd-box"><span id="cd-hours">00</span><p>Hs</p></div>
+                       <div class="cd-sep">:</div>
+                       <div class="cd-box"><span id="cd-mins">00</span><p>Min</p></div>
+                       <div class="cd-sep">:</div>
+                       <div class="cd-box"><span id="cd-secs">00</span><p>Seg</p></div>
+                   </div>
+               </div>
+           </section>
+
+           <!-- MENSAJE Y PADRES -->
+           <section class="section-pad reveal">
+               <div class="invitarte-card">
+                   <p class="invite-quote">
+                       Hace diez años comenzó nuestra historia. Desde entonces, aprendimos que el amor se construye con paciencia, compañerismo y la decisión de elegirnos cada día. Hoy, con enorme ilusión y el corazón lleno de gratitud, queremos compartir con ustedes el momento en que uniremos nuestras vidas en el sagrado matrimonio.
+                   </p>
+
+                   <div class="minimal-divider-grande"></div>
+
+                   <p class="blessing-text">Con la bendición de Dios y de nuestros padres</p>
+                   
+                   <div class="parents-container mt-20">
+                       <div class="parent-col">
+                           <p class="parent-role">PADRES DE LA NOVIA</p>
+                           <p class="parent-names">Fátima Ibarra Vda. De López<br>& Carlos López Duarte (†)</p>
+                       </div>
+                       <div class="parents-divider"></div>
+                       <div class="parent-col">
+                           <p class="parent-role">PADRES DEL NOVIO</p>
+                           <p class="parent-names">Balbina Benítez de Bernal<br>& Rústico Bernal Martínez</p>
+                       </div>
+                   </div>
+               </div>
+           </section>
+
+           <!-- GALERÍA NOSOTROS (4 FOTOS) -->
+           <section class="section-pad reveal">
+               <h2 class="editorial-heading">NOSOTROS</h2>
+               <p class="title-sub-cursive">Deslizá para ver las fotos</p>
+
+               <div class="gallery-slider-wrapper mt-20">
+                   <div class="gallery-slider" id="gallerySlider">
+                       <div class="slide-item"><img src="img/foto1.jpg" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80'" alt="Foto 1"></div>
+                       <div class="slide-item"><img src="img/foto2.jpg" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80'" alt="Foto 2"></div>
+                       <div class="slide-item"><img src="img/foto4.jpg" onerror="this.src='https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80'" alt="Foto 4"></div>
+                       <div class="slide-item"><img src="img/foto5.jpg" class="img-focus-rings" onerror="this.src='https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80'" alt="Foto 5"></div>
+                   </div>
+                   <div class="slider-hint mt-10">
+                       <i class="fa-solid fa-arrow-left-long"></i> Deslizá <i class="fa-solid fa-arrow-right-long"></i>
+                   </div>
+               </div>
+           </section>
+
+           <!-- UBICACIONES -->
+           <section class="section-pad location-section-spacious reveal">
+               <h2 class="editorial-heading">UBICACIONES</h2>
+               <p class="title-sub-cursive">Dónde celebramos</p>
+
+               <div class="venue-card-watercolor mt-25">
+                   <div class="venue-icon-wrap"><i class="fa-solid fa-church"></i></div>
+                   <h3 class="venue-title">CEREMONIA RELIGIOSA</h3>
+                   <p class="venue-time">20:00 HS</p>
+                   <p class="venue-desc">Parroquia Virgen de Loreto<br><small>Fuerza Aérea Paraguaya</small></p>
+                   <div class="btn-group-center mt-15">
+                       <a href="https://maps.app.goo.gl/ewbAw9paunnqyEno6" target="_blank" class="btn btn-outline-dark"><i class="fa-solid fa-location-dot"></i> Google Maps</a>
+                   </div>
+               </div>
+
+               <div class="venue-card-watercolor mt-35">
+                   <div class="venue-icon-wrap"><i class="fa-solid fa-wine-glass"></i></div>
+                   <h3 class="venue-title">RECEPCIÓN & CEREMONIA CIVIL</h3>
+                   <p class="venue-time">Terminada la ceremonia religiosa te esperamos</p>
+                   <p class="venue-desc">Casita Quinta</p>
+                   <div class="btn-group-center mt-15">
+                       <a href="https://maps.app.goo.gl/QqkHz9hD5j3A2ZZm8" target="_blank" class="btn btn-outline-dark"><i class="fa-solid fa-location-dot"></i> Google Maps</a>
+                   </div>
+               </div>
+           </section>
+       </div>
+
+       <!-- CRONOGRAMA -->
+       <div class="bloque-verde-oliva-solido">
+           <section class="section-pad reveal text-center">
+               
+               <div class="itinerary-deco-wrap">
+                   <img src="img/hojas-verdes.png" onerror="this.style.display='none'" class="deco-flower" alt="Hojas Verdes">
+                   <div class="deco-polaroid">
+                       <img src="img/foto1.jpg" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=300&q=80'" alt="Novios Cronograma">
+                   </div>
+               </div>
+
+               <h2 class="editorial-heading-light mt-20">CRONOGRAMA</h2>
+               <p class="title-sub-cursive-light">Viernes 02 de Octubre de 2026</p>
+
+               <div class="program-timeline-icons mt-30">
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-church"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">20:00 HS</span>
+                           <h4 class="p-title">Ceremonia Religiosa</h4>
+                       </div>
+                   </div>
+
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-glass-cheers"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">21:00 HS</span>
+                           <h4 class="p-title">Recepción</h4>
+                       </div>
+                   </div>
+
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-pen-nib"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">22:00 HS</span>
+                           <h4 class="p-title">Ceremonia Civil</h4>
+                       </div>
+                   </div>
+
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-music"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">22:45 HS</span>
+                           <h4 class="p-title">Vals</h4>
+                       </div>
+                   </div>
+
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-utensils"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">23:00 HS</span>
+                           <h4 class="p-title">Cena</h4>
+                       </div>
+                   </div>
+
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-compact-disc"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">00:00 HS</span>
+                           <h4 class="p-title">Baile & Fiesta</h4>
+                       </div>
+                   </div>
+
+                   <div class="program-card">
+                       <div class="icon-circle"><i class="fa-solid fa-moon"></i></div>
+                       <div class="program-info">
+                           <span class="p-time">03:00 HS</span>
+                           <h4 class="p-title">Fin del Evento</h4>
+                       </div>
+                   </div>
+               </div>
+           </section>
+       </div>
+
+       <!-- DRESS CODE Y DETALLES -->
+       <div class="bloque-papel-textura">
+           <section class="section-pad reveal">
+               <div class="dress-icon-head mt-10"><i class="fa-solid fa-user-tie"></i></div>
+               <h2 class="editorial-heading mt-10">DRESS CODE</h2>
+               <p class="title-sub-cursive">Código de Vestimenta</p>
+
+               <p class="dress-code-subtitle">ELEGANTE</p>
+
+               <div class="notice-box-green mt-15">
+                   <p>Por favor evitar vestidos en color <strong>blanco, marfil y verde oliva</strong>.</p>
+               </div>
+           </section>
+
+           <section class="section-pad reveal text-center">
+               <h2 class="editorial-heading">DETALLES</h2>
+               <p class="title-sub-cursive">Para tener en cuenta</p>
+
+               <div class="details-grid mt-20">
+                   <div class="detail-item" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+                       <i class="fa-solid fa-child-reaching detail-icon"></i>
+                       <h4>EVENTO SOLO PARA ADULTOS</h4>
+                   </div>
+               </div>
+           </section>
+
+           <section class="section-pad reveal">
+               <div class="gift-envelope-card">
+                   <div class="envelope-seal-wrap">
+                       <img src="img/sobre-verde-abierto.png" onerror="this.style.display='none'" alt="Sobre" class="gift-envelope-img">
+                   </div>
+                   
+                   <h2 class="editorial-heading mt-15">SUGERENCIA DE REGALO</h2>
+                   <p class="title-sub-cursive">Un detalle con los novios</p>
+                   <p class="gift-text">
+                       Su presencia es nuestro mejor regalo. Si desean realizar un obsequio, abajo detallamos nuestras cuentas:
+                   </p>
+                   <button type="button" class="btn btn-editorial mt-15" onclick="toggleGiftModal()">VER CUENTAS BANCARIAS</button>
+
+                   <div id="gift-modal" class="gift-modal-box hidden-element mt-15">
+                       <div class="account-card-item">
+                           <p class="acc-title"><strong>Margarita López</strong></p>
+                           <p><strong>Banco:</strong> Itaú Paraguay</p>
+                           <p><strong>Alias / C.I.:</strong> 4025820</p>
+                           <button type="button" class="btn btn-sm btn-outline-dark mt-10" onclick="copyAlias('4025820', 'Margarita')">
+                               <i class="fa-regular fa-copy"></i> Copiar C.I. (4025820)
+                           </button>
+                       </div>
+
+                       <div class="acc-divider"></div>
+
+                       <div class="account-card-item">
+                           <p class="acc-title"><strong>Pedro Bernal</strong></p>
+                           <p><strong>Banco:</strong> Itaú Paraguay</p>
+                           <p><strong>Alias / C.I.:</strong> 3803418</p>
+                           <button type="button" class="btn btn-sm btn-outline-dark mt-10" onclick="copyAlias('3803418', 'Pedro')">
+                               <i class="fa-regular fa-copy"></i> Copiar C.I. (3803418)
+                           </button>
+                       </div>
+                   </div>
+               </div>
+           </section>
+       </div>
+
+       <!-- CONFIRMACIÓN DE ASISTENCIA -->
+       <div class="bloque-verde-oliva-solido">
+           <section class="section-pad reveal text-center">
+               <h2 class="editorial-heading-light">CONFIRMACIÓN DE ASISTENCIA</h2>
+               
+               <p class="rsvp-deadline-light mt-15">Por favor confirmar asistencia antes del <strong>15 de Septiembre de 2026</strong></p>
+
+               <a href="https://wa.me/595984581751?text=%C2%A1Hola%21%20confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Margarita%20%26%20Pedro%20%F0%9F%A4%8D%20Nombre%20y%20Apellido%3A" class="btn btn-white-pill mt-25" target="_blank">
+                   <i class="fa-brands fa-whatsapp"></i> CONFIRMAR POR WHATSAPP
+               </a>
+           </section>
+       </div>
+
+       <!-- BUZÓN DE CANCIONES Y ÁLBUM DRIVE -->
+       <div class="bloque-papel-textura">
+           <section class="section-pad reveal text-center">
+               <div class="playlist-card">
+                   <i class="fa-solid fa-music playlist-icon-music"></i>
+                   <h2 class="editorial-heading mt-10">BUZÓN DE CANCIONES</h2>
+                   <p class="title-sub-cursive">¿Qué canción no puede faltar?</p>
+                   <p class="gift-text">Queremos que la fiesta sea inolvidable. ¡Sugerinos los temas que querés bailar!</p>
+
+                   <form id="song-form" onsubmit="sugerirCancion(event)" class="song-form mt-15">
+                       <input type="text" id="song-input" placeholder="Nombre de la canción y artista..." required class="input-editorial">
+                       <button type="submit" class="btn btn-editorial mt-10"><i class="fa-solid fa-paper-plane"></i> RECOMENDAR CANCIÓN</button>
+                   </form>
+               </div>
+           </section>
+
+           <section class="section-pad reveal text-center">
+               <div class="guestbook-card">
+                   <i class="fa-solid fa-camera guestbook-icon"></i>
+                   <h2 class="editorial-heading mt-10">ÁLBUM COLECTIVO DE FOTOS</h2>
+                   <p class="title-sub-cursive">Compartí tus momentos del evento</p>
+                   <p class="gift-text">Subí acá todas las fotos y videos que saques durante la boda para guardarlos de recuerdo.</p>
+
+                   <a href="https://drive.google.com/drive/folders/1r7Ol7nX5l9IX6mvBZals5VVsRxlCDS9u?usp=sharing" target="_blank" class="btn btn-editorial mt-20">
+                       <i class="fa-brands fa-google-drive"></i> SUBIR MIS FOTOS Y VIDEOS
+                   </a>
+               </div>
+           </section>
+       </div>
+
+       <!-- CIERRE BÍBLICO ESPIRITUAL -->
+       <div class="bloque-verde-oliva-solido">
+           <section class="section-pad reveal text-center">
+               <div class="bible-quote-box">
+                   <p class="bible-text">"Y sobre todas estas cosas, vístanse de amor, que es el vínculo perfecto."</p>
+                   <span class="bible-ref">Colosenses 3:14</span>
+               </div>
+
+               <div class="farewell-signature mt-30">
+                   <p class="farewell-with-love">Con cariño,</p>
+                   <h2 class="farewell-couple">Margarita & Pedro</h2>
+               </div>
+           </section>
+
+           <footer class="editorial-footer">
+               <p>© GHISA DIGITAL · DESIGN STUDIO</p>
+           </footer>
+       </div>
+
+   </div>
+
+   <script src="script.js"></script>
+</body>
+</html>
